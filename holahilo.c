@@ -3,13 +3,18 @@
 #include <unistd.h>
 
 
-#define NUM_THREADS 100
+#define NUM_THREADS 10000
 int saldo;
 
+pthread_mutex_t lockSaldo = PTHREAD_MUTEX_INITIALIZER;
+
 void *printHola(void *arg){
-    int saldolocal=saldo;
+    int saldolocal;
+    pthread_mutex_lock(&lockSaldo);
+    saldolocal=saldo;
     saldolocal+=100;
     saldo=saldolocal;
+    pthread_mutex_unlock(&lockSaldo);
 
     pthread_exit(NULL);
 
